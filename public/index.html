@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Task Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #151820;
+      --border: #252a36;
+      --accent: #00e5a0;
+      --accent2: #7c6cff;
+      --warn: #ff5e5e;
+      --text: #e8eaf0;
+      --muted: #6b7280;
+      --card: #1a1f2e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Header ── */
+    header {
+      margin-bottom: 48px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      background: rgba(0,229,160,0.08);
+      border: 1px solid rgba(0,229,160,0.2);
+      padding: 4px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .subtitle {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* ── Stats bar ── */
+    .stats {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      flex: 1;
+      min-width: 100px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      font-family: 'Space Mono', monospace;
+      line-height: 1;
+    }
+
+    .stat-num.green { color: var(--accent); }
+    .stat-num.purple { color: var(--accent2); }
+    .stat-num.red { color: var(--warn); }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
+
+    /* ── Input area ── */
+    .input-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,229,160,0.08);
+    }
+
+    input[type="text"]::placeholder { color: var(--muted); }
+
+    .btn-add {
+      background: var(--accent);
+      color: #0d0f14;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 24px;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn-add:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,229,160,0.25);
+    }
+
+    .btn-add:active { transform: translateY(0); }
+
+    /* ── Filter tabs ── */
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,229,160,0.05);
+    }
+
+    /* ── Task list ── */
+    #task-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .task-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      animation: slideIn 0.3s ease;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+
+    .task-item:hover { border-color: #353b4d; transform: translateX(3px); }
+    .task-item.done { opacity: 0.55; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .task-check {
+      width: 22px; height: 22px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      flex-shrink: 0;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+      background: transparent;
+    }
+
+    .task-check:hover { border-color: var(--accent); }
+    .task-check.checked { background: var(--accent); border-color: var(--accent); }
+    .task-check.checked::after { content: '✓'; color: #0d0f14; font-size: 13px; font-weight: 700; }
+
+    .task-title {
+      flex: 1;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .task-item.done .task-title {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .task-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .btn-delete {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--muted);
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .btn-delete:hover { color: var(--warn); border-color: var(--warn); background: rgba(255,94,94,0.08); }
+
+    /* ── Empty state ── */
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty p { font-family: 'Space Mono', monospace; font-size: 13px; }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed;
+      bottom: 32px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--card);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      opacity: 0;
+      transition: all 0.3s;
+      pointer-events: none;
+      z-index: 100;
+      white-space: nowrap;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── Pipeline status bar ── */
+    .pipeline {
+      margin-top: 56px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      background: var(--card);
+    }
+
+    .pipeline-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+
+    .pipeline-stages {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      row-gap: 12px;
+    }
+
+    .stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 80px;
+    }
+
+    .stage-dot {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      position: relative;
+    }
+
+    .stage-dot.done { background: rgba(0,229,160,0.1); border-color: var(--accent); }
+    .stage-dot.active { background: rgba(124,108,255,0.1); border-color: var(--accent2); animation: pulse 1.5s infinite; }
+
+    .stage-label {
+      font-size: 10px;
+      font-family: 'Space Mono', monospace;
+      color: var(--muted);
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stage-arrow {
+      color: var(--border);
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-bottom: 22px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">CI/CD Pipeline Project</div>
+    <h1>Student<br/><span>Task Manager</span></h1>
+    <p class="subtitle">// Node.js + Express + Docker + GitHub Actions</p>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num green" id="total-count">0</div>
+      <div class="stat-label">Total</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num purple" id="pending-count">0</div>
+      <div class="stat-label">Pending</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--accent)" id="done-count">0</div>
+      <div class="stat-label">Completed</div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="input-row">
+    <input type="text" id="task-input" placeholder="Add a new task... e.g. Complete Lab 5" maxlength="100"/>
+    <button class="btn-add" onclick="addTask()">+ Add Task</button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn" onclick="setFilter('pending', this)">Pending</button>
+    <button class="filter-btn" onclick="setFilter('done', this)">Done</button>
+  </div>
+
+  <!-- Task List -->
+  <div id="task-list"></div>
+
+  <!-- CI/CD Pipeline Visual -->
+  <div class="pipeline">
+    <div class="pipeline-title">// CI/CD Pipeline Stages</div>
+    <div class="pipeline-stages">
+      <div class="stage">
+        <div class="stage-dot done">🔀</div>
+        <div class="stage-label">Git Push</div>
+      </div>
+      <div class="stage-arrow">→</div>
+      <div class="stage">
+        <div class="stage-dot done">🧪</div>
+        <div class="stage-label">Jest Tests</div>
+      </div>
+      <div class="stage-arrow">→</div>
+      <div class="stage">
+        <div class="stage-dot done">🔍</div>
+        <div class="stage-label">SonarQube</div>
+      </div>
+      <div class="stage-arrow">→</div>
+      <div class="stage">
+        <div class="stage-dot done">🐳</div>
+        <div class="stage-label">Docker Build</div>
+      </div>
+      <div class="stage-arrow">→</div>
+      <div class="stage">
+        <div class="stage-dot done">☁️</div>
+        <div class="stage-label">Docker Hub</div>
+      </div>
+      <div class="stage-arrow">→</div>
+      <div class="stage">
+        <div class="stage-dot active">🚀</div>
+        <div class="stage-label">Deploy</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+  let currentFilter = 'all';
+
+  async function loadTasks() {
+    const res = await fetch('/api/tasks');
+    const data = await res.json();
+    renderTasks(data.tasks);
+  }
+
+  function renderTasks(tasks) {
+    const list = document.getElementById('task-list');
+    const total = tasks.length;
+    const done = tasks.filter(t => t.completed).length;
+    const pending = total - done;
+
+    document.getElementById('total-count').textContent = total;
+    document.getElementById('done-count').textContent = done;
+    document.getElementById('pending-count').textContent = pending;
+
+    const filtered = tasks.filter(t => {
+      if (currentFilter === 'pending') return !t.completed;
+      if (currentFilter === 'done') return t.completed;
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      list.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">📋</div>
+          <p>No tasks here. Add one above!</p>
+        </div>`;
+      return;
+    }
+
+    list.innerHTML = filtered.map(task => {
+      const date = new Date(task.createdAt).toLocaleDateString('en-IN', { day:'2-digit', month:'short' });
+      return `
+        <div class="task-item ${task.completed ? 'done' : ''}" id="task-${task.id}">
+          <div class="task-check ${task.completed ? 'checked' : ''}" onclick="toggleTask(${task.id})"></div>
+          <span class="task-title">${escapeHtml(task.title)}</span>
+          <span class="task-meta">${date}</span>
+          <button class="btn-delete" onclick="deleteTask(${task.id})" title="Delete">✕</button>
+        </div>`;
+    }).join('');
+  }
+
+  async function addTask() {
+    const input = document.getElementById('task-input');
+    const title = input.value.trim();
+    if (!title) { showToast('⚠ Please enter a task title'); return; }
+
+    const res = await fetch('/api/tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title })
+    });
+    if (res.ok) {
+      input.value = '';
+      showToast('✓ Task added');
+      loadTasks();
+    }
+  }
+
+  async function toggleTask(id) {
+    await fetch(`/api/tasks/${id}`, { method: 'PATCH' });
+    loadTasks();
+  }
+
+  async function deleteTask(id) {
+    await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
+    showToast('✓ Task deleted');
+    loadTasks();
+  }
+
+  function setFilter(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    loadTasks();
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // Enter key support
+  document.getElementById('task-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addTask();
+  });
+
+  loadTasks();
+</script>
+</body>
+</html>
