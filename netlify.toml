@@ -1,0 +1,15 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+# Redirect /api/tasks → Netlify Function
+# This means the frontend still calls /api/tasks (no URL change needed)
+[[redirects]]
+  from = "/api/tasks"
+  to = "/.netlify/functions/tasks"
+  status = 200
+
+[[redirects]]
+  from = "/api/tasks/*"
+  to = "/.netlify/functions/tasks"
+  status = 200
