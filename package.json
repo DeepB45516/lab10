@@ -10,7 +10,9 @@
   "jest": {
     "testEnvironment": "node",
     "coverageDirectory": "coverage",
-    "collectCoverageFrom": ["netlify/functions/**/*.js"]
+    "collectCoverageFrom": [
+      "netlify/functions/**/*.js"
+    ]
   },
   "devDependencies": {
     "jest": "^29.7.0"
