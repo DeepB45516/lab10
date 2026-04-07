@@ -28,7 +28,6 @@
       overflow-x: hidden;
     }
 
-    /* Grid background */
     body::before {
       content: '';
       position: fixed;
@@ -49,10 +48,7 @@
       z-index: 1;
     }
 
-    /* ── Header ── */
-    header {
-      margin-bottom: 48px;
-    }
+    header { margin-bottom: 48px; }
 
     .badge {
       display: inline-flex;
@@ -99,7 +95,6 @@
       font-family: 'Space Mono', monospace;
     }
 
-    /* ── Stats bar ── */
     .stats {
       display: flex;
       gap: 16px;
@@ -124,10 +119,6 @@
       line-height: 1;
     }
 
-    .stat-num.green { color: var(--accent); }
-    .stat-num.purple { color: var(--accent2); }
-    .stat-num.red { color: var(--warn); }
-
     .stat-label {
       font-size: 11px;
       color: var(--muted);
@@ -136,7 +127,6 @@
       margin-top: 4px;
     }
 
-    /* ── Input area ── */
     .input-row {
       display: flex;
       gap: 12px;
@@ -182,9 +172,6 @@
       box-shadow: 0 8px 24px rgba(0,229,160,0.25);
     }
 
-    .btn-add:active { transform: translateY(0); }
-
-    /* ── Filter tabs ── */
     .filters {
       display: flex;
       gap: 8px;
@@ -205,14 +192,12 @@
       letter-spacing: 0.05em;
     }
 
-    .filter-btn.active,
-    .filter-btn:hover {
+    .filter-btn.active, .filter-btn:hover {
       border-color: var(--accent);
       color: var(--accent);
       background: rgba(0,229,160,0.05);
     }
 
-    /* ── Task list ── */
     #task-list { display: flex; flex-direction: column; gap: 10px; }
 
     .task-item {
@@ -243,24 +228,14 @@
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: all 0.2s;
-      background: transparent;
     }
 
     .task-check:hover { border-color: var(--accent); }
     .task-check.checked { background: var(--accent); border-color: var(--accent); }
     .task-check.checked::after { content: '✓'; color: #0d0f14; font-size: 13px; font-weight: 700; }
 
-    .task-title {
-      flex: 1;
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 1.4;
-    }
-
-    .task-item.done .task-title {
-      text-decoration: line-through;
-      color: var(--muted);
-    }
+    .task-title { flex: 1; font-size: 15px; font-weight: 600; line-height: 1.4; }
+    .task-item.done .task-title { text-decoration: line-through; color: var(--muted); }
 
     .task-meta {
       font-family: 'Space Mono', monospace;
@@ -284,17 +259,10 @@
 
     .btn-delete:hover { color: var(--warn); border-color: var(--warn); background: rgba(255,94,94,0.08); }
 
-    /* ── Empty state ── */
-    .empty {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--muted);
-    }
-
+    .empty { text-align: center; padding: 60px 20px; color: var(--muted); }
     .empty-icon { font-size: 48px; margin-bottom: 16px; }
     .empty p { font-family: 'Space Mono', monospace; font-size: 13px; }
 
-    /* ── Toast ── */
     #toast {
       position: fixed;
       bottom: 32px; left: 50%;
@@ -310,15 +278,10 @@
       transition: all 0.3s;
       pointer-events: none;
       z-index: 100;
-      white-space: nowrap;
     }
 
-    #toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ── Pipeline status bar ── */
     .pipeline {
       margin-top: 56px;
       border: 1px solid var(--border);
@@ -339,19 +302,11 @@
     .pipeline-stages {
       display: flex;
       align-items: center;
-      gap: 0;
       flex-wrap: wrap;
       row-gap: 12px;
     }
 
-    .stage {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      flex: 1;
-      min-width: 80px;
-    }
+    .stage { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; min-width: 80px; }
 
     .stage-dot {
       width: 36px; height: 36px;
@@ -360,27 +315,13 @@
       font-size: 16px;
       border: 2px solid var(--border);
       background: var(--surface);
-      position: relative;
     }
 
     .stage-dot.done { background: rgba(0,229,160,0.1); border-color: var(--accent); }
     .stage-dot.active { background: rgba(124,108,255,0.1); border-color: var(--accent2); animation: pulse 1.5s infinite; }
 
-    .stage-label {
-      font-size: 10px;
-      font-family: 'Space Mono', monospace;
-      color: var(--muted);
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .stage-arrow {
-      color: var(--border);
-      font-size: 18px;
-      flex-shrink: 0;
-      margin-bottom: 22px;
-    }
+    .stage-label { font-size: 10px; font-family: 'Space Mono', monospace; color: var(--muted); text-align: center; text-transform: uppercase; }
+    .stage-arrow { color: var(--border); font-size: 18px; flex-shrink: 0; margin-bottom: 22px; }
   </style>
 </head>
 <body>
@@ -389,17 +330,16 @@
   <header>
     <div class="badge">CI/CD Pipeline Project</div>
     <h1>Student<br/><span>Task Manager</span></h1>
-    <p class="subtitle">// Node.js + Express + Docker + GitHub Actions</p>
+    <p class="subtitle">// Node.js + Netlify Functions + Docker + GitHub Actions</p>
   </header>
 
-  <!-- Stats -->
   <div class="stats">
     <div class="stat">
-      <div class="stat-num green" id="total-count">0</div>
+      <div class="stat-num" style="color:var(--accent)" id="total-count">0</div>
       <div class="stat-label">Total</div>
     </div>
     <div class="stat">
-      <div class="stat-num purple" id="pending-count">0</div>
+      <div class="stat-num" style="color:var(--accent2)" id="pending-count">0</div>
       <div class="stat-label">Pending</div>
     </div>
     <div class="stat">
@@ -408,55 +348,33 @@
     </div>
   </div>
 
-  <!-- Input -->
   <div class="input-row">
     <input type="text" id="task-input" placeholder="Add a new task... e.g. Complete Lab 5" maxlength="100"/>
     <button class="btn-add" onclick="addTask()">+ Add Task</button>
   </div>
 
-  <!-- Filters -->
   <div class="filters">
     <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
     <button class="filter-btn" onclick="setFilter('pending', this)">Pending</button>
     <button class="filter-btn" onclick="setFilter('done', this)">Done</button>
   </div>
 
-  <!-- Task List -->
   <div id="task-list"></div>
 
-  <!-- CI/CD Pipeline Visual -->
   <div class="pipeline">
     <div class="pipeline-title">// CI/CD Pipeline Stages</div>
     <div class="pipeline-stages">
-      <div class="stage">
-        <div class="stage-dot done">🔀</div>
-        <div class="stage-label">Git Push</div>
-      </div>
+      <div class="stage"><div class="stage-dot done">🔀</div><div class="stage-label">Git Push</div></div>
       <div class="stage-arrow">→</div>
-      <div class="stage">
-        <div class="stage-dot done">🧪</div>
-        <div class="stage-label">Jest Tests</div>
-      </div>
+      <div class="stage"><div class="stage-dot done">🧪</div><div class="stage-label">Jest Tests</div></div>
       <div class="stage-arrow">→</div>
-      <div class="stage">
-        <div class="stage-dot done">🔍</div>
-        <div class="stage-label">SonarQube</div>
-      </div>
+      <div class="stage"><div class="stage-dot done">🔍</div><div class="stage-label">SonarQube</div></div>
       <div class="stage-arrow">→</div>
-      <div class="stage">
-        <div class="stage-dot done">🐳</div>
-        <div class="stage-label">Docker Build</div>
-      </div>
+      <div class="stage"><div class="stage-dot done">🐳</div><div class="stage-label">Docker Build</div></div>
       <div class="stage-arrow">→</div>
-      <div class="stage">
-        <div class="stage-dot done">☁️</div>
-        <div class="stage-label">Docker Hub</div>
-      </div>
+      <div class="stage"><div class="stage-dot done">☁️</div><div class="stage-label">Docker Hub</div></div>
       <div class="stage-arrow">→</div>
-      <div class="stage">
-        <div class="stage-dot active">🚀</div>
-        <div class="stage-label">Deploy</div>
-      </div>
+      <div class="stage"><div class="stage-dot active">🚀</div><div class="stage-label">Deploy</div></div>
     </div>
   </div>
 
@@ -465,12 +383,21 @@
 <div id="toast"></div>
 
 <script>
+  // ── API base — works both locally and on Netlify ──────────────────
+  // On Netlify: /api/tasks redirects to /.netlify/functions/tasks
+  // Locally:    point directly to the function or use netlify dev
+  const API = '/api/tasks';
+
   let currentFilter = 'all';
 
   async function loadTasks() {
-    const res = await fetch('/api/tasks');
-    const data = await res.json();
-    renderTasks(data.tasks);
+    try {
+      const res = await fetch(API);
+      const data = await res.json();
+      renderTasks(data.tasks);
+    } catch (e) {
+      showToast('⚠ Could not connect to API');
+    }
   }
 
   function renderTasks(tasks) {
@@ -490,22 +417,18 @@
     });
 
     if (filtered.length === 0) {
-      list.innerHTML = `
-        <div class="empty">
-          <div class="empty-icon">📋</div>
-          <p>No tasks here. Add one above!</p>
-        </div>`;
+      list.innerHTML = `<div class="empty"><div class="empty-icon">📋</div><p>No tasks here. Add one above!</p></div>`;
       return;
     }
 
     list.innerHTML = filtered.map(task => {
-      const date = new Date(task.createdAt).toLocaleDateString('en-IN', { day:'2-digit', month:'short' });
+      const date = new Date(task.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
       return `
-        <div class="task-item ${task.completed ? 'done' : ''}" id="task-${task.id}">
+        <div class="task-item ${task.completed ? 'done' : ''}">
           <div class="task-check ${task.completed ? 'checked' : ''}" onclick="toggleTask(${task.id})"></div>
           <span class="task-title">${escapeHtml(task.title)}</span>
           <span class="task-meta">${date}</span>
-          <button class="btn-delete" onclick="deleteTask(${task.id})" title="Delete">✕</button>
+          <button class="btn-delete" onclick="deleteTask(${task.id})">✕</button>
         </div>`;
     }).join('');
   }
@@ -515,7 +438,7 @@
     const title = input.value.trim();
     if (!title) { showToast('⚠ Please enter a task title'); return; }
 
-    const res = await fetch('/api/tasks', {
+    const res = await fetch(API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title })
@@ -528,12 +451,13 @@
   }
 
   async function toggleTask(id) {
-    await fetch(`/api/tasks/${id}`, { method: 'PATCH' });
+    // PATCH with id as query param (Netlify Functions don't support path params easily)
+    await fetch(`${API}?id=${id}`, { method: 'PATCH' });
     loadTasks();
   }
 
   async function deleteTask(id) {
-    await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
+    await fetch(`${API}?id=${id}`, { method: 'DELETE' });
     showToast('✓ Task deleted');
     loadTasks();
   }
@@ -556,7 +480,6 @@
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  // Enter key support
   document.getElementById('task-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') addTask();
   });
