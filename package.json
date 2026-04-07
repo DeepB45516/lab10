@@ -1,27 +1,19 @@
 {
   "name": "student-task-manager",
-  "version": "1.0.0",
-  "description": "A Student Task Manager with full CI/CD Pipeline",
-  "main": "src/server.js",
+  "version": "2.0.0",
+  "description": "Student Task Manager with Netlify Functions CI/CD Pipeline",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
+    "dev": "netlify dev",
     "test": "jest --coverage",
-    "build": "echo '✅ Build successful - Node.js app requires no compilation'"
+    "build": "echo '✅ Build successful'"
   },
   "jest": {
     "testEnvironment": "node",
     "coverageDirectory": "coverage",
-    "collectCoverageFrom": [
-      "src/**/*.js"
-    ]
-  },
-  "dependencies": {
-    "express": "^4.18.2"
+    "collectCoverageFrom": ["netlify/functions/**/*.js"]
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "supertest": "^6.3.4"
+    "jest": "^29.7.0"
   },
   "engines": {
     "node": ">=18.0.0"
